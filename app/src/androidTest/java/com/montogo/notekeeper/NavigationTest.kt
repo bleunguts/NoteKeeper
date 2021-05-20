@@ -1,5 +1,4 @@
-package com.montogo.notekeeper
-
+package com.montogo.notekeeper;
 import org.junit.Assert.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Test
@@ -14,6 +13,7 @@ import androidx.test.espresso.contrib.DrawerActions
 import androidx.test.espresso.contrib.NavigationViewActions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.rule.ActivityTestRule
+import com.montogo.notekeeper.ItemsActivity
 
 @RunWith(AndroidJUnit4::class)
 class NavigationTest {
@@ -21,13 +21,13 @@ class NavigationTest {
     val itemsActivity = ActivityTestRule(ItemsActivity::class.java)
 
     @Test
-    fun selectNoteAfterNavigationDrawerChanged() {
+    fun selectNoteAfterNavigationDrawerChange() {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open())
-        onView(withId(R.id.nav_view)).perform((NavigationViewActions.navigateTo(R.id.nav_courses)))
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_courses))
 
-        var coursePosition = 0
+        val coursePosition = 0
         onView(withId(R.id.listItems)).perform(
-            RecyclerViewActions.actionOnItemAtPosition<CourseRecyclerAdapter.ViewHolder>(coursePosition, click())
+                RecyclerViewActions.actionOnItemAtPosition<CourseRecyclerAdapter.ViewHolder>(coursePosition, click())
         )
 
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open())
@@ -35,7 +35,7 @@ class NavigationTest {
 
         val notePosition = 0
         onView(withId(R.id.listItems)).perform(
-            RecyclerViewActions.actionOnItemAtPosition<NoteRecyclerAdapter.ViewHolder>(notePosition, click())
+                RecyclerViewActions.actionOnItemAtPosition<NoteRecyclerAdapter.ViewHolder>(notePosition, click())
         )
 
         val note = DataManager.notes[notePosition]
@@ -43,5 +43,8 @@ class NavigationTest {
         onView(withId(R.id.textNoteTitle)).check(matches(withText(containsString(note.title))))
         onView(withId(R.id.textNoteText)).check(matches(withText(containsString(note.text))))
 
+
     }
 }
+
+

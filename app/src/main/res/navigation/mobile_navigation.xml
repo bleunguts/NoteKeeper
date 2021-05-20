@@ -3,11 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/blankFragment">
+    app:startDestination="@+id/nav_notes">
 
     <fragment
-        android:id="@+id/blankFragment"
-        android:name="com.montogo.notekeeper.BlankFragment"
-        android:label="fragment_blank"
-        tools:layout="@layout/fragment_blank" />
+        android:id="@+id/nav_notes"
+        android:name="com.montogo.notekeeper.ui.NotesFragment"
+        android:label="Notes"
+        tools:layout="@layout/fragment_notes">
+        <argument
+            android:name="type"
+            app:argType="com.montogo.notekeeper.ui.NotesFragmentType"
+            android:defaultValue="Notes"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_courses"
+        android:name="com.montogo.notekeeper.ui.CoursesFragment"
+        android:label="Courses"
+        tools:layout="@layout/fragment_courses" />
+
+    <fragment
+        android:id="@+id/nav_recent_notes"
+        android:name="com.montogo.notekeeper.ui.NotesFragment"
+        android:label="Notes"
+        tools:layout="@layout/fragment_notes">
+        <argument
+            android:name="type"
+            app:argType="com.montogo.notekeeper.ui.NotesFragmentType"
+            android:defaultValue="RecentNotes"/>
+    </fragment>
+
+
+    <fragment android:id="@+id/nav_send" />
+    <fragment android:id="@+id/nav_share" />
+
 </navigation>

@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.montogo.notekeeper.databinding.ActivityNoteListBinding
 
 class NoteListActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityNoteListBinding
+    private lateinit var listItems: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,21 +17,14 @@ class NoteListActivity : AppCompatActivity() {
         binding = ActivityNoteListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
-
-        binding.fab.setOnClickListener { view ->
-            val activityIntent = Intent(this, NoteActivity::class.java)
-            startActivity(activityIntent)
-        }
-
-        val listItems = findViewById<RecyclerView>(R.id.listItems)
+        //setSupportActionBar(binding.toolbar)
+        listItems = findViewById(R.id.listItems)
         listItems.layoutManager = LinearLayoutManager(this)
-        listItems.adapter = NoteRecyclerAdapter(this, DataManager.notes)
+        listItems.adapter = NoteRecyclerAdapter(this, DataManager.loadNotes())
     }
 
     override fun onResume() {
         super.onResume()
-        val listItems = findViewById<RecyclerView>(R.id.listItems)
         listItems.adapter?.notifyDataSetChanged()
     }
 }

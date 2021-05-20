@@ -9,34 +9,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 
 class CourseRecyclerAdapter(private val context: Context, private val courses: List<CourseInfo>) :
-    RecyclerView.Adapter<CourseRecyclerAdapter.ViewHolder>() {
-
+        RecyclerView.Adapter<CourseRecyclerAdapter.ViewHolder>() {
     private val layoutInflater = LayoutInflater.from(context)
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = layoutInflater.inflate(R.layout.item_course_list, parent, false)
         return ViewHolder(itemView)
     }
+    override fun getItemCount() = courses.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val course = this.courses.get(position)
-        holder.courseTitle.text = course.title
+        val course = courses[position]
+        holder.textCourse?.text = course.title
         holder.coursePosition = position
     }
 
-    override fun getItemCount(): Int {
-        return this.courses.size
-    }
-
-    inner class ViewHolder(view : View) : RecyclerView.ViewHolder(view) {
-        val courseTitle = view.findViewById<TextView>(R.id.textCourse2)
-        var coursePosition: Int = 0
+    inner class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView!!) {
+        val textCourse = itemView?.findViewById<TextView?>(R.id.textCourse)
+        var coursePosition = 0
         init {
-            view.setOnClickListener{
-                Snackbar.make(it, courses.get(coursePosition).title, Snackbar.LENGTH_LONG)
+            itemView?.setOnClickListener {
+                Snackbar.make(it, courses[coursePosition].title, Snackbar.LENGTH_LONG).show()
             }
         }
     }
