@@ -14,7 +14,7 @@ object DataManager {
         return notes
     }
 
-    fun loadNotes(vararg noteIds: Int): List<NoteInfo> {
+    fun loadNotes(noteIds: ArrayList<Int>): List<NoteInfo> {
         simulateLoadDelay()
         val noteList: List<NoteInfo>
 
@@ -34,10 +34,11 @@ object DataManager {
 
     fun idOfNote(note: NoteInfo) = notes.indexOf(note)
 
-    fun noteIdsAsIntArray(notes: List<NoteInfo>): IntArray {
-        val noteIds = IntArray(notes.size)
-        for(index in 0..notes.lastIndex)
-            noteIds[index] = DataManager.idOfNote(notes[index])
+    fun noteIdsAsIntArray(notes: List<NoteInfo>): ArrayList<Int> {
+        val noteIds = ArrayList<Int>(notes.size)
+        for (note in notes) {
+            noteIds.add(idOfNote(note))
+        }
         return noteIds
     }
 

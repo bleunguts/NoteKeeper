@@ -21,7 +21,6 @@ import com.montogo.notekeeper.databinding.ActivityItemsBinding
 import com.montogo.notekeeper.ui.NotesFragment
 
 class ItemsActivity : AppCompatActivity() {
-
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityItemsBinding
     private val viewModel by lazy {

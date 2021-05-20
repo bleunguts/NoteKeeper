@@ -23,7 +23,9 @@ class NotesFragment : Fragment(), NoteRecyclerAdapter.OnNoteSelectedListener {
     private var _binding: FragmentNotesBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel : NotesViewModel
+    private val viewModel by lazy {
+        ViewModelProvider(requireActivity()).get(NotesViewModel::class.java)
+    }
 
     private val noteRecyclerAdapter by lazy {
         val adapter = NoteRecyclerAdapter(requireContext(), DataManager.loadNotes())
@@ -44,8 +46,10 @@ class NotesFragment : Fragment(), NoteRecyclerAdapter.OnNoteSelectedListener {
     ): View? {
         _binding = FragmentNotesBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        viewModel = ViewModelProvider(requireActivity()).get(NotesViewModel::class.java)
-        
+        if(viewModel.isNewlyCreated && savedInstanceState != null)
+            viewModel.restoreState(savedInstanceState)
+        viewModel.isNewlyCreated = false
+
         val listItems = root.findViewById<RecyclerView>(R.id.listItems)
         listItems.layoutManager = LinearLayoutManager(requireContext())
         listItems.adapter = when (requireArguments().get("type") as NotesFragmentType) {
@@ -81,5 +85,7 @@ class NotesFragment : Fragment(), NoteRecyclerAdapter.OnNoteSelectedListener {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        if (outState != null && viewModel != null)
+            viewModel.saveState(outState)
     }
 }
