@@ -2,9 +2,9 @@ package com.montogo.notekeeper
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.montogo.notekeeper.databinding.ActivityNoteListBinding
 
 class NoteListActivity : AppCompatActivity() {
@@ -20,26 +20,18 @@ class NoteListActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         binding.fab.setOnClickListener { view ->
-            val activityIntent = Intent(this, MainActivity::class.java)
+            val activityIntent = Intent(this, NoteActivity::class.java)
             startActivity(activityIntent)
         }
 
-        val listNotes = findViewById<ListView>(R.id.listNotes)
-        listNotes.adapter = ArrayAdapter(this,
-            android.R.layout.simple_list_item_1,
-            DataManager.notes
-        )
-
-        listNotes.setOnItemClickListener { parent, view, position, id ->
-            val activityIntent = Intent(this, MainActivity::class.java)
-            activityIntent.putExtra(NOTE_POSITION, position)
-            startActivity(activityIntent)
-        }
+        val listItems = findViewById<RecyclerView>(R.id.listItems)
+        listItems.layoutManager = LinearLayoutManager(this)
+        listItems.adapter = NoteRecyclerAdapter(this, DataManager.notes)
     }
 
     override fun onResume() {
         super.onResume()
-        val listNotes = findViewById<ListView>(R.id.listNotes)
-        (listNotes.adapter as ArrayAdapter<NoteInfo>).notifyDataSetChanged()
+        val listItems = findViewById<RecyclerView>(R.id.listItems)
+        listItems.adapter?.notifyDataSetChanged()
     }
 }
