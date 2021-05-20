@@ -1,6 +1,5 @@
 package com.montogo.notekeeper
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
@@ -9,9 +8,9 @@ import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
-import androidx.navigation.ui.AppBarConfiguration
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleObserver
 import com.google.android.material.snackbar.Snackbar
-import com.montogo.notekeeper.databinding.ActivityItemsBinding
 import com.montogo.notekeeper.databinding.ActivityNoteBinding
 
 class NoteActivity : AppCompatActivity() {
@@ -23,6 +22,8 @@ class NoteActivity : AppCompatActivity() {
 
     private val tag = this::class.simpleName
     private var notePosition = POSITION_NOT_SET
+
+    val noteGetTogetherHelper = NoteGetTogetherHelper(this, this.lifecycle)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
