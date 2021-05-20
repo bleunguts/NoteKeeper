@@ -17,7 +17,6 @@ class NoteListActivity : AppCompatActivity() {
         binding = ActivityNoteListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //setSupportActionBar(binding.toolbar)
         listItems = findViewById(R.id.listItems)
         listItems.layoutManager = LinearLayoutManager(this)
         listItems.adapter = NoteRecyclerAdapter(this, DataManager.loadNotes())

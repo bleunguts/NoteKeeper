@@ -23,13 +23,13 @@ class NotesFragment : Fragment(), NoteRecyclerAdapter.OnNoteSelectedListener {
     private var _binding: FragmentNotesBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var viewModel : NotesViewModel
+
     private val noteRecyclerAdapter by lazy {
         val adapter = NoteRecyclerAdapter(requireContext(), DataManager.loadNotes())
         adapter.setOnSelectedListener(this)
         adapter
     }
-
-    private lateinit var viewModel : NotesViewModel
 
     private val recentlyViewedNoteRecyclerAdapter by lazy {
         val adapter = NoteRecyclerAdapter(requireContext(), viewModel.recentlyViewedNotes)
@@ -47,9 +47,8 @@ class NotesFragment : Fragment(), NoteRecyclerAdapter.OnNoteSelectedListener {
         viewModel = ViewModelProvider(requireActivity()).get(NotesViewModel::class.java)
         
         val listItems = root.findViewById<RecyclerView>(R.id.listItems)
-        val notesFragmentType = requireArguments().get("type") as NotesFragmentType
         listItems.layoutManager = LinearLayoutManager(requireContext())
-        listItems.adapter = when (notesFragmentType) {
+        listItems.adapter = when (requireArguments().get("type") as NotesFragmentType) {
             NotesFragmentType.Notes -> noteRecyclerAdapter
             NotesFragmentType.RecentNotes -> recentlyViewedNoteRecyclerAdapter
         }
@@ -78,5 +77,9 @@ class NotesFragment : Fragment(), NoteRecyclerAdapter.OnNoteSelectedListener {
     override fun onNoteSelected(note: NoteInfo) {
         viewModel.addToRecentlyViewedNotes(note)
         println("Note added.")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
     }
 }
