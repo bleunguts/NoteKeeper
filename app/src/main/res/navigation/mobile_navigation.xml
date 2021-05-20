@@ -33,7 +33,6 @@
             android:defaultValue="RecentNotes"/>
     </fragment>
 
-
     <fragment android:id="@+id/nav_send" />
     <fragment android:id="@+id/nav_share" />
 

@@ -23,9 +23,6 @@ import com.montogo.notekeeper.ui.NotesFragment
 class ItemsActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityItemsBinding
-    private val viewModel by lazy {
-        ViewModelProvider(this)[ItemsActivityViewModel::class.java]
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +31,6 @@ class ItemsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.appBarItems.toolbar)
-
-        handleDisplaySelection(viewModel.navDrawerDisplaySelection)
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
@@ -49,57 +44,6 @@ class ItemsActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-        /* new way of doing things
-        navView.setNavigationItemSelectedListener { menu ->
-            when (menu.itemId) {
-                R.id.nav_notes, R.id.nav_courses -> {
-                    handleDisplaySelection(menu.itemId)
-                    // navigate to new fragment here
-                    viewModel.navDrawerDisplaySelection = menu.itemId
-                }
-                R.id.nav_share -> {
-                    System.out.println("share called")
-                    navView.menu.findItem(R.id.nav_share).isChecked = true
-                }
-                R.id.nav_send -> {
-                    System.out.println("send called")
-                    navView.menu.findItem(R.id.nav_send).isChecked = true
-                }
-            }
-            val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-            drawerLayout.closeDrawer(GravityCompat.START)
-            true
-        }
-        */
-
-        navController.addOnDestinationChangedListener { controller: NavController, destination: NavDestination, bundle: Bundle? ->
-            when (destination.id) {
-                R.id.nav_notes, R.id.nav_courses -> {
-                    handleDisplaySelection(destination.id)
-                    viewModel.navDrawerDisplaySelection = destination.id
-                }
-                R.id.nav_share -> {
-                    System.out.println("share called")
-                }
-                R.id.nav_send -> {
-                    System.out.println("send called")
-                }
-            }
-            val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-            drawerLayout.closeDrawer(GravityCompat.START)
-        }
-    }
-
-    private fun handleDisplaySelection(itemId: Number) {
-        when (itemId) {
-            R.id.nav_notes -> {
-                System.out.println("notes called")
-            }
-            R.id.nav_courses -> {
-                System.out.println("courses called")
-            }
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -46,6 +46,7 @@ class NotesFragment : Fragment(), NoteRecyclerAdapter.OnNoteSelectedListener {
     ): View? {
         _binding = FragmentNotesBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
         if(viewModel.isNewlyCreated && savedInstanceState != null)
             viewModel.restoreState(savedInstanceState)
         viewModel.isNewlyCreated = false
