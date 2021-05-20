@@ -50,16 +50,8 @@ class NotesFragment : Fragment(), NoteRecyclerAdapter.OnNoteSelectedListener {
         val notesFragmentType = requireArguments().get("type") as NotesFragmentType
         listItems.layoutManager = LinearLayoutManager(requireContext())
         listItems.adapter = when (notesFragmentType) {
-            NotesFragmentType.Notes -> {
-                println("NotesFragmentType.Notes detected")
-                noteRecyclerAdapter
-            }
-            NotesFragmentType.RecentNotes -> {
-                println("NotesFragmentType.RecentNotes detected")
-                // add some dummy data
-                //addToRecentlyViewedNotes(NoteInfo(DataManager.courses["android_intents"],"dummy", "data"))
-                recentlyViewedNoteRecyclerAdapter
-            }
+            NotesFragmentType.Notes -> noteRecyclerAdapter
+            NotesFragmentType.RecentNotes -> recentlyViewedNoteRecyclerAdapter
         }
 
         val fab = root.findViewById<FloatingActionButton>(R.id.fab)
