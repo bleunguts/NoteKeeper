@@ -1,6 +1,8 @@
 package com.montogo.notekeeper
 
+import android.content.DialogInterface
 import android.os.Bundle
+import android.os.Environment
 import android.os.PersistableBundle
 import android.util.Log
 import android.view.Menu
@@ -8,10 +10,11 @@ import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LifecycleObserver
 import com.google.android.material.snackbar.Snackbar
 import com.montogo.notekeeper.databinding.ActivityNoteBinding
+
 
 class NoteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNoteBinding
@@ -35,16 +38,21 @@ class NoteActivity : AppCompatActivity() {
         textNoteTitle = findViewById<TextView>(R.id.textNoteTitle)
         textNoteText = findViewById<TextView>(R.id.textNoteText)
 
-        val adapterCourses = ArrayAdapter<CourseInfo>(this,
+        val adapterCourses = ArrayAdapter<CourseInfo>(
+            this,
             android.R.layout.simple_spinner_item,
-            DataManager.courses.values.toList())
+            DataManager.courses.values.toList()
+        )
         adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         spinnerCourses.adapter = adapterCourses
-        notePosition = savedInstanceState?.getInt(NOTE_POSITION, POSITION_NOT_SET) ?:
-                intent.getIntExtra(NOTE_POSITION, POSITION_NOT_SET)
+        notePosition =
+            savedInstanceState?.getInt(NOTE_POSITION, POSITION_NOT_SET) ?: intent.getIntExtra(
+                NOTE_POSITION,
+                POSITION_NOT_SET
+            )
 
-        if(notePosition != POSITION_NOT_SET)
+        if (notePosition != POSITION_NOT_SET)
             displayNote()
         else {
             createNewNote()
@@ -102,7 +110,7 @@ class NoteActivity : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_next -> {
-                if(DataManager.isLastNoteId(notePosition)) {
+                if (DataManager.isLastNoteId(notePosition)) {
                     val message = "No more notes"
                     showMessage(message)
                 } else {
@@ -110,14 +118,24 @@ class NoteActivity : AppCompatActivity() {
                 }
                 true
             }
+            R.id.action_get_together -> {
+                val note = DataManager.loadNote(notePosition)
+                noteGetTogetherHelper.sendMessage(note)
+                AlertDialog.Builder(this)
+                    .setTitle("Message Sent")
+                    .setMessage("\"${note.title}\" \n\t ${note.text} sent.")
+                    .setCancelable(false)
+                    .setPositiveButton("ok", { d, i -> true }).show()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        if(DataManager.isLastNoteId(notePosition)) {
+        if (DataManager.isLastNoteId(notePosition)) {
             val menuItem = menu?.findItem(R.id.action_next)
-            if(menuItem != null) {
+            if (menuItem != null) {
                 menuItem.icon = getDrawable(R.drawable.ic_block_white_24dp)
             }
         }
